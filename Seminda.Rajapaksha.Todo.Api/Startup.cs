@@ -1,15 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using Seminda.Rajapaksha.Todo.Api.Application.Command;
+using Seminda.Rajapaksha.Todo.Api.Application.Query;
+using Seminda.Rajapaksha.Todo.Api.Domain.Repository;
+using Seminda.Rajapaksha.Todo.Api.Infrastructure.DataAccess;
+using Seminda.Rajapaksha.Todo.Api.Infrastructure.Repository;
 
 namespace Seminda.Rajapaksha.Todo.Api
 {
@@ -25,7 +24,14 @@ namespace Seminda.Rajapaksha.Todo.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<TodoItemContext>(opt =>
+                opt.UseInMemoryDatabase("TodoList"));
+
             services.AddControllers();
+
+            services.AddScoped<ITaskRepository, TaskRepository>();
+            services.AddScoped<ICreateTaskCommand, CreateTaskCommand>();
+            services.AddScoped<IGetTaskQuery, GetTaskQuery>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
