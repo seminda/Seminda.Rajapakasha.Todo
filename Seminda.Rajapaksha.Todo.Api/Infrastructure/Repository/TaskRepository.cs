@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Seminda.Rajapaksha.Todo.Api.Domain.Model;
 using Seminda.Rajapaksha.Todo.Api.Domain.Repository;
 using Seminda.Rajapaksha.Todo.Api.Infrastructure.DataAccess;
@@ -21,9 +21,10 @@ namespace Seminda.Rajapaksha.Todo.Api.Infrastructure.Repository
             await _context.SaveChangesAsync();
         }
 
-        public Task UpdateTask(TodoItem entity)
+        public async Task UpdateTask(TodoItem entity)
         {
-            throw new NotImplementedException();
+            _context.Entry(entity).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
         }
 
         public async Task<TodoItem> GetTask(long id)
@@ -33,14 +34,20 @@ namespace Seminda.Rajapaksha.Todo.Api.Infrastructure.Repository
             return todoItem;
         }
 
-        public Task<IEnumerable<TodoItem>> GetAllTasks()
+        public async Task<IEnumerable<TodoItem>> GetAllTasks()
         {
-            throw new NotImplementedException();
+            return await _context.TodoItems.ToListAsync();
         }
 
-        public Task DeleteTask(long id)
+        public async Task DeleteTask(long id)
         {
-            throw new NotImplementedException();
+            var todoItem = await _context.TodoItems.FindAsync(id);
+
+            if (todoItem != null)
+            {
+                _context.TodoItems.Remove(todoItem);
+                await _context.SaveChangesAsync();
+            }
         }
     }
 }

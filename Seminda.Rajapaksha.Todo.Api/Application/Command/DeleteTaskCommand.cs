@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Seminda.Rajapaksha.Todo.Api.Application.Common;
 using Seminda.Rajapaksha.Todo.Api.Application.Model;
 using Seminda.Rajapaksha.Todo.Api.Domain.Repository;
 
@@ -13,9 +14,18 @@ namespace Seminda.Rajapaksha.Todo.Api.Application.Command
             _taskRepository = repository;
         }
         
-        public Task<Result<bool>> Execute(long id)
+        public async Task<Result<bool>> Execute(long id)
         {
-            throw new System.NotImplementedException();
+            var task = await _taskRepository.GetTask(id);
+
+            if (task == null)
+            {
+                return Result<bool>.Failed(ErrorCode.NotFound, Constants.NotFoundErrorMessage);
+            }
+
+            await _taskRepository.DeleteTask(id);
+
+            return Result<bool>.Success(true);
         }
     }
 }

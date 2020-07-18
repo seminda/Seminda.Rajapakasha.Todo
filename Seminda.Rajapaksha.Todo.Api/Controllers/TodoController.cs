@@ -13,12 +13,19 @@ namespace Seminda.Rajapaksha.Todo.Api.Controllers
     public class TodoController : ControllerBase
     {
         private readonly ICreateTaskCommand _createTaskCommand;
+        private readonly IUpdateTaskCommand _updateTaskCommand;
+        private readonly IDeleteTaskCommand _deleteTaskCommand;
         private readonly IGetTaskQuery _getTaskQuery;
+        private readonly IGetTaskListQuery _getTaskListQuery;
 
-        public TodoController(ICreateTaskCommand createTaskCommand, IGetTaskQuery getTaskQuery)
+        public TodoController(ICreateTaskCommand createTaskCommand, IUpdateTaskCommand updateTaskCommand,
+            IDeleteTaskCommand deleteTaskCommand, IGetTaskQuery getTaskQuery, IGetTaskListQuery getTaskListQuery)
         {
             _createTaskCommand = createTaskCommand;
+            _updateTaskCommand = updateTaskCommand;
+            _deleteTaskCommand = deleteTaskCommand;
             _getTaskQuery = getTaskQuery;
+            _getTaskListQuery = getTaskListQuery;
         }
 
         [HttpPost(Name = "CreateTodo")]
@@ -29,7 +36,40 @@ namespace Seminda.Rajapaksha.Todo.Api.Controllers
             return OkOrFailure(result, HttpStatusCode.Created);
         }
 
-        private IActionResult OkOrFailure<TResponse>(Result<TResponse> result, HttpStatusCode responseStatus = HttpStatusCode.OK, string createdUri = "")
+        [HttpPut("{id}", Name = "UpdateTodo")]
+        public async Task<IActionResult> UpdateTodo([FromRoute] long id, UpdateTodoItemDto todoItem)
+        {
+            var result = await _updateTaskCommand.Execute(id, todoItem);
+
+            return OkOrFailure(result);
+        }
+
+        [HttpGet("{id}", Name = "GetTodo")]
+        public async Task<IActionResult> GetTodo([FromRoute] long id)
+        {
+            var result = await _getTaskQuery.Execute(id);
+
+            return OkOrFailure(result);
+        }
+
+        [HttpGet(Name = "GetTodoList")]
+        public async Task<IActionResult> GetTodoList()
+        {
+            var result = await _getTaskListQuery.Execute();
+
+            return OkOrFailure(result);
+        }
+
+        [HttpDelete("{id}", Name = "DeleteTodo")]
+        public async Task<IActionResult> DeleteTodo([FromRoute] long id)
+        {
+            var result = await _deleteTaskCommand.Execute(id);
+
+            return OkOrFailure(result);
+        }
+
+        private IActionResult OkOrFailure<TResponse>(Result<TResponse> result,
+            HttpStatusCode responseStatus = HttpStatusCode.OK, string createdUri = "")
         {
             if (result.IsSuccess())
             {
@@ -41,15 +81,8 @@ namespace Seminda.Rajapaksha.Todo.Api.Controllers
                         return Ok(result.Data);
                 }
             }
+
             return Failure(result.ErrorCode);
-        }
-
-        [HttpGet("{id}", Name = "GetTodo")]
-        public async Task<IActionResult> GetTodo([FromRoute]long id)
-        {
-            var result = await _getTaskQuery.Execute(id);
-
-            return OkOrFailure(result);
         }
 
         private IActionResult Failure(ErrorCode? errorCategory)
@@ -59,7 +92,7 @@ namespace Seminda.Rajapaksha.Todo.Api.Controllers
                 case ErrorCode.NotFound:
                     return NotFound();
                 default:
-                    return StatusCode((int)HttpStatusCode.InternalServerError);
+                    return StatusCode((int) HttpStatusCode.InternalServerError);
             }
         }
     }

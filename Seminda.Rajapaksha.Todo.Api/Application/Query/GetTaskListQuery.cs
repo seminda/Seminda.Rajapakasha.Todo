@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Seminda.Rajapaksha.Todo.Api.Application.Model;
 using Seminda.Rajapaksha.Todo.Api.Domain.Repository;
@@ -14,9 +15,19 @@ namespace Seminda.Rajapaksha.Todo.Api.Application.Query
             _taskRepository = repository;
         }
         
-        public Task<Result<List<TodoItemDto>>> Execute()
+        public async Task<Result<List<TodoItemDto>>> Execute()
         {
-            throw new System.NotImplementedException();
+            var items = await _taskRepository.GetAllTasks();
+
+            var todoItems = new List<TodoItemDto>();
+
+            if (items != null)
+            {
+                todoItems.AddRange(items.Select(item => new TodoItemDto
+                    { Id = item.Id, Name = item.Name, IsComplete = item.IsComplete }));
+            }
+
+            return Result<List<TodoItemDto>>.Success(todoItems);
         }
     }
 }

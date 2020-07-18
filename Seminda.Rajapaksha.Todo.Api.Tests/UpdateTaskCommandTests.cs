@@ -2,48 +2,51 @@
 using AutoFixture;
 using FluentAssertions;
 using NSubstitute;
+using Seminda.Rajapaksha.Todo.Api.Application.Command;
 using Seminda.Rajapaksha.Todo.Api.Application.Common;
-using Seminda.Rajapaksha.Todo.Api.Application.Query;
+using Seminda.Rajapaksha.Todo.Api.Application.Model;
 using Seminda.Rajapaksha.Todo.Api.Domain.Model;
 using Seminda.Rajapaksha.Todo.Api.Domain.Repository;
 using Xunit;
 
 namespace Seminda.Rajapaksha.Todo.Api.Tests
 {
-    public class GetTaskQueryTests
+    public class UpdateTaskCommandTests
     {
         private readonly Fixture _fixture;
         private readonly ITaskRepository _taskRepositoryMock;
-        private readonly IGetTaskQuery _getTaskQuery;
+        private readonly IUpdateTaskCommand _updateTaskCommand;
 
-        public GetTaskQueryTests()
+        public UpdateTaskCommandTests()
         {
             _fixture = new Fixture();
             _taskRepositoryMock = Substitute.For<ITaskRepository>();
 
-            _getTaskQuery = new GetTaskQuery(_taskRepositoryMock);
+            _updateTaskCommand = new UpdateTaskCommand(_taskRepositoryMock);
         }
 
         [Fact]
-        public async Task GetTaskQuery_Execute_Success()
+        public async Task UpdateTaskCommand_Execute_Success()
         {
+            var id = 3456;
+            var todoTaskDto = _fixture.Create<UpdateTodoItemDto>();
             var todoTask = _fixture.Create<TodoItem>();
+            todoTask.Id = id;
 
             _taskRepositoryMock.GetTask(Arg.Any<long>()).Returns(todoTask);
+            _taskRepositoryMock.UpdateTask(Arg.Any<TodoItem>()).Returns(Task.FromResult(1));
 
-
-            var result = await _getTaskQuery.Execute(todoTask.Id);
+            var result = await _updateTaskCommand.Execute(2345, todoTaskDto);
 
             result.IsSuccess().Should().BeTrue();
-            result.Data.Id.Should().Be(todoTask.Id);
         }
 
         [Fact]
-        public async Task GetTaskQuery_Execute_Todo_NotFound()
+        public async Task UpdateTaskCommand_Execute_Todo_NotFound()
         {
-            var id = 23894;
+            var todoTask = _fixture.Create<UpdateTodoItemDto>();
 
-            var result = await _getTaskQuery.Execute(id);
+            var result = await _updateTaskCommand.Execute(2345, todoTask);
 
             result.IsSuccess().Should().BeFalse();
             result.ErrorCode.Should().Be(ErrorCode.NotFound);

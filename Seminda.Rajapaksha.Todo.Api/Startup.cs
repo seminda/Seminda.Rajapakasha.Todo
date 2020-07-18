@@ -31,7 +31,10 @@ namespace Seminda.Rajapaksha.Todo.Api
 
             services.AddScoped<ITaskRepository, TaskRepository>();
             services.AddScoped<ICreateTaskCommand, CreateTaskCommand>();
+            services.AddScoped<IUpdateTaskCommand, UpdateTaskCommand>();
+            services.AddScoped<IDeleteTaskCommand, DeleteTaskCommand>();
             services.AddScoped<IGetTaskQuery, GetTaskQuery>();
+            services.AddScoped<IGetTaskListQuery, GetTaskListQuery>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
