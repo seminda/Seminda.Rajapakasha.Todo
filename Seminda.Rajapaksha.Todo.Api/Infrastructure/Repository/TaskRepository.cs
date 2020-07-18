@@ -26,9 +26,11 @@ namespace Seminda.Rajapaksha.Todo.Api.Infrastructure.Repository
             throw new NotImplementedException();
         }
 
-        public Task<TodoItem> GetTask(long id)
+        public async Task<TodoItem> GetTask(long id)
         {
-            throw new NotImplementedException();
+            var todoItem = await _context.TodoItems.FindAsync(id);
+
+            return todoItem;
         }
 
         public Task<IEnumerable<TodoItem>> GetAllTasks()
