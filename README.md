@@ -3,6 +3,7 @@
 ## Assumptions
 
 - No Authentication 
+- Create, Update, Delete, Get and Get All functionalities required
 
 
 ## Technology
