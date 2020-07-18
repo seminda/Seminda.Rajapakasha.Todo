@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30011.22
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Seminda.Rajapaksha.Todo.Api", "Seminda.Rajapaksha.Todo.Api.csproj", "{8F6FDD9D-69D7-4108-9CE1-783EF46CE5D5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{37DE9311-EAB9-4642-8E22-468417510A41}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Seminda.Rajapaksha.Todo.Api.Tests", "..\Seminda.Rajapaksha.Todo.Api.Tests\Seminda.Rajapaksha.Todo.Api.Tests.csproj", "{D6D8D60C-E726-44CD-BEF7-584A464C4E3D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8F6FDD9D-69D7-4108-9CE1-783EF46CE5D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F6FDD9D-69D7-4108-9CE1-783EF46CE5D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F6FDD9D-69D7-4108-9CE1-783EF46CE5D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F6FDD9D-69D7-4108-9CE1-783EF46CE5D5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6D8D60C-E726-44CD-BEF7-584A464C4E3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6D8D60C-E726-44CD-BEF7-584A464C4E3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6D8D60C-E726-44CD-BEF7-584A464C4E3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6D8D60C-E726-44CD-BEF7-584A464C4E3D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D6D8D60C-E726-44CD-BEF7-584A464C4E3D} = {37DE9311-EAB9-4642-8E22-468417510A41}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1501FB3A-1FC1-4855-9C18-3A369319AA8A}
+	EndGlobalSection
+EndGlobal
