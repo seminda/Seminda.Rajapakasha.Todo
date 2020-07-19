@@ -12,6 +12,7 @@
 
 ## Development Notes
 
+- In memory database used
 - Only unit tests added for application command and query level
 - No Validation included
 - No exception handling included
